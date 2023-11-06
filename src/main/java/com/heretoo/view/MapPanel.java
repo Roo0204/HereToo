@@ -40,25 +40,6 @@ public class MapPanel extends JPanel {
         // focus 설정
         this.setFocusable(true);
         this.requestFocus();
-
-        // 메뉴바
-        JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new JMenuItem("Open"));
-        fileMenu.add(new JMenuItem("Save"));
-        fileMenu.add(new JMenuItem("Exit"));
-
-        JMenu editMenu = new JMenu("Edit");
-        editMenu.add(new JMenuItem("Cut"));
-        editMenu.add(new JMenuItem("Copy"));
-        editMenu.add(new JMenuItem("Paste"));
-
-        // 메뉴바에 메뉴 추가
-        menuBar.add(fileMenu);
-        menuBar.add(editMenu);
-
-        // 메뉴바를 Frame의 NORTH 위치에 추가
-        add(menuBar, BorderLayout.NORTH);
     }
 
     public void updateMap(List<List<String>> pointList) {

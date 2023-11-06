@@ -172,7 +172,6 @@ public class SearchPanel extends JPanel {
             resultList.add(dto);
         }
 
-        resultSet.first();
         resultSet.last();
         total = resultSet.getRow();
         db.closeConnection();
@@ -190,6 +189,10 @@ public class SearchPanel extends JPanel {
 
         pageNum.setText(String.valueOf(page));
 
+        for (int i = 0; i < 5; i++) {
+            res[i].removeAll();
+        }
+
         if (total <= 0) {
             mapPanel.updateMap(null);
             return;
@@ -197,10 +200,6 @@ public class SearchPanel extends JPanel {
 
         int idx = (page - 1) * 5;
         List<List<String>> pointList = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            res[i].removeAll();
-        }
 
         for (int i = 0; i < 5; i++) {
 
