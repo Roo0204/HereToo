@@ -6,10 +6,7 @@ import com.heretoo.util.DBManager;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -26,11 +23,11 @@ public class SearchPanel extends JPanel {
     private JLabel pageNum;
     private Integer total;
     private JLabel resultNum;
-    private final MapPanel mapPanel;
+    private final MainFrame mainFrame;
     private static final String indexAlphabet = "ABCDE";
 
-    public SearchPanel(MapPanel mp) {
-        mapPanel = mp;
+    public SearchPanel(MainFrame mf) {
+        mainFrame = mf;
 
         resultList = new ArrayList<>();
         page = 1;
@@ -41,7 +38,6 @@ public class SearchPanel extends JPanel {
         JTextField searchField = new JTextField(20); // 검색창 생성
         searchField.setText("여기에 검색어를 입력하세요");
 
-        searchField.setMaximumSize(new Dimension(10, 20)); // 최대 사이즈 설정
 
         // 포커스 이벤트를 통해 힌트 텍스트 관리
         searchField.addFocusListener(new FocusListener() {
@@ -75,6 +71,7 @@ public class SearchPanel extends JPanel {
                 }
             }
         });
+        searchButton.setFocusable(false);
 
         // 검색창 부분 추가
         JPanel searchButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // 검색 버튼을 오른쪽에 배치
@@ -90,10 +87,11 @@ public class SearchPanel extends JPanel {
         resultPanel.add(resultNum);
         resultPanel.setPreferredSize(new Dimension(300, 700));
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.Y_AXIS));
+
         res = new JPanel[5];
         for (int i = 0; i < 5; i++) {
             res[i] = new JPanel();
-            res[i].setPreferredSize(new Dimension(300, 100));
+            res[i].setPreferredSize(new Dimension(300, 200));
             res[i].setBorder(new LineBorder(Color.black, 1));
             res[i].setLayout(new BorderLayout());
             resultPanel.add(res[i]);
@@ -115,6 +113,7 @@ public class SearchPanel extends JPanel {
                 }
             }
         });
+        prev.setFocusable(false);
 
         next.addActionListener(new ActionListener() {
             @Override
@@ -125,6 +124,7 @@ public class SearchPanel extends JPanel {
                 }
             }
         });
+        next.setFocusable(false);
 
         pageNum = new JLabel();
         pagePanel.add(prev);
@@ -155,7 +155,7 @@ public class SearchPanel extends JPanel {
         }
 
         DBManager db = DBManager.getInstance(database, userName, password);
-        db.makeConnection();
+
         String query = "select * from spot where name like '%" + keyWord + "%'";
         ResultSet resultSet = db.executeQuery(query);
 
@@ -174,7 +174,7 @@ public class SearchPanel extends JPanel {
 
         resultSet.last();
         total = resultSet.getRow();
-        db.closeConnection();
+
         updateResult();
     }
 
@@ -191,10 +191,13 @@ public class SearchPanel extends JPanel {
 
         for (int i = 0; i < 5; i++) {
             res[i].removeAll();
+            for (MouseListener m : res[i].getMouseListeners()) {
+                res[i].removeMouseListener(m);
+            }
         }
 
         if (total <= 0) {
-            mapPanel.updateMap(null);
+            mainFrame.updateMap(null);
             return;
         }
 
@@ -202,6 +205,8 @@ public class SearchPanel extends JPanel {
         List<List<String>> pointList = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
+
+            final int index = i;
 
             if (idx + i >= total) {
                 break;
@@ -225,9 +230,34 @@ public class SearchPanel extends JPanel {
             res[i].add(indexLabel, BorderLayout.NORTH);
             res[i].add(spotLabel, BorderLayout.CENTER);
             res[i].add(themeLabel, BorderLayout.SOUTH);
-            res[i].repaint();
+            res[i].addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+//                    mainFrame.changePanel(new SpotPanel(data.getName()));
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    mainFrame.changePanel(new SpotPanel(data.getName()));
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    res[index].setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    res[index].setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+            });
         }
-        mapPanel.updateMap(pointList);
+        mainFrame.updateMap(pointList);
     }
 
 

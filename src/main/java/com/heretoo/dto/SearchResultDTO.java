@@ -11,4 +11,15 @@ public class SearchResultDTO {
     private Double lat;
     private Double lng;
     private String theme;
+
+    @Override
+    public String toString() {
+        return "SearchResultDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", theme='" + theme + '\'' +
+                '}';
+    }
 }

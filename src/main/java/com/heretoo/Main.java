@@ -25,7 +25,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        DBManager.getInstance(database, userName, password);
+        DBManager.getInstance(database, userName, password).makeConnection();
 
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();

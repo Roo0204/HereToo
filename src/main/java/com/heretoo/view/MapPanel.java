@@ -24,22 +24,10 @@ public class MapPanel extends JPanel {
         }
 
         setLayout(new BorderLayout());
-
-        JPanel mapPanel = new JPanel();
-        mapPanel.setPreferredSize(new Dimension(700, 700)); // 지도가 표시될 오른쪽 패널 크기
+        setPreferredSize(new Dimension(700, 700)); // 지도가 표시될 오른쪽 패널 크기
 
         mapLabel = new JLabel(new ImageIcon());
-        mapPanel.add(mapLabel);
-
-        SearchPanel searchPanel = new SearchPanel(this);
-
-        // Set up layout
-        add(mapPanel, BorderLayout.EAST);
-        add(searchPanel, BorderLayout.WEST);
-
-        // focus 설정
-        this.setFocusable(true);
-        this.requestFocus();
+        add(mapLabel);
     }
 
     public void updateMap(List<List<String>> pointList) {
@@ -77,7 +65,6 @@ public class MapPanel extends JPanel {
                     points +
                     "&size=640x640&scale=2" +
                     "&key=" + APIKey;
-            System.out.println(imgURL);
             URL url = new URL(imgURL);
             InputStream is = url.openStream();
             OutputStream os = new FileOutputStream(path);

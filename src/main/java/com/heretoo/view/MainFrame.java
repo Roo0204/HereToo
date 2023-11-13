@@ -2,11 +2,14 @@ package com.heretoo.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.Stack;
 
 public class MainFrame extends JFrame {
 
     private int width;
     private int height;
+    private Stack<JPanel> panelStack;
 
     public MainFrame() throws HeadlessException {
         width = 1000;
@@ -16,8 +19,18 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 닫기 버튼 동작 설정
         setLocationRelativeTo(null); // 화면 가운데에 프레임 표시
         setLayout(new BorderLayout());
-        add(new MapPanel());
+
+        panelStack = new Stack<>();
+
+        MapPanel mapPanel = new MapPanel();
+        panelStack.add(mapPanel);
+        add(new SearchPanel(this), BorderLayout.WEST);
+        add(mapPanel, BorderLayout.EAST);
         initMenu();
+
+        // focus 설정
+        this.setFocusable(true);
+        this.requestFocus();
     }
 
     private void initMenu() {
@@ -39,5 +52,22 @@ public class MainFrame extends JFrame {
 
         // 메뉴바를 Frame의 NORTH 위치에 추가
         add(menuBar, BorderLayout.NORTH);
+    }
+
+    public void updateMap(List<List<String>> pointList) {
+        JPanel jp;
+        while ((jp = panelStack.pop()).getClass() != MapPanel.class) {
+            jp.setVisible(false);
+        }
+        jp.setVisible(true);
+        panelStack.add(jp);
+        ((MapPanel)jp).updateMap(pointList);
+    }
+
+    public void changePanel(JPanel newPanel) {
+        panelStack.peek().setVisible(false);
+        newPanel.setVisible(true);
+        panelStack.add(newPanel);
+        add(newPanel, BorderLayout.EAST);
     }
 }
