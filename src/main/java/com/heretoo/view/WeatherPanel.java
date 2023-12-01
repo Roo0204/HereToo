@@ -14,32 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WeatherPanel extends JPanel {
-    public String PANEL_TITLE = "지역 날씨";
-
-    // image list for weather
-    private final HashMap<String, String> weatherImageList = new HashMap<>() {{
-        put("SUN", "sun");
-        put("CLOUD", "cloud");
-        put("RAIN", "rain");
-        put("CLOUDY", "cloudy");
-        put("STORM", "storm");
-//        put("SNOW", "snow");
-        put("WIND", "wind");
-        put("SUNSET", "sunset");
-        put("SUNRISE", "sunrise");
-        put("SUNSET_ARROW", "sunset_arrow");
-        put("SUNRISE_ARROW", "sunrise_arrow");
-        put("FINE_DUST", "fine_dust");
-        put("HUMIDITY", "humidity");
-        put("UV", "uv-index");
-    }};
+    public final String PANEL_TITLE = "지역 날씨";
 
     public WeatherPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(680, 700));
 
         JPanel panel = new JPanel();
-        // create margin bottom for each panel
         panel.add(titlePanel(PANEL_TITLE));
         panel.add(whitespacePanel(90*7, 10));
         panel.add(panelsToday());
@@ -202,7 +183,6 @@ public class WeatherPanel extends JPanel {
         panel.add(label);
     }
 
-    // add an image into panel
     private void addASizedImage(String imgName, int w, int h, JPanel panel) {
         JLabel image = new JLabel();
         Image mapImage = null;
@@ -224,10 +204,8 @@ public class WeatherPanel extends JPanel {
         panel.add(image);
     }
 
-    // add an image into panel
     private void addAnImage(String imgName, JPanel panel) {
         if (imgName.isEmpty()){
-            // add a whitespace panel to keep the layout
             JPanel whitespace = new JPanel();
             whitespace.setOpaque(false);
             whitespace.setSize(new Dimension(60, 60));

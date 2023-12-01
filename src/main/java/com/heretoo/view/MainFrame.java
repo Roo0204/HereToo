@@ -26,6 +26,10 @@ public class MainFrame extends JFrame {
         panelStack.add(wPanel);
         add(wPanel, BorderLayout.EAST);
 
+        LocationPanel locationPanel = new LocationPanel();
+        panelStack.add(locationPanel);
+        add(locationPanel, BorderLayout.EAST);
+
         MapPanel mapPanel = new MapPanel();
         panelStack.add(mapPanel);
         add(new SearchPanel(this), BorderLayout.WEST);
@@ -35,7 +39,7 @@ public class MainFrame extends JFrame {
         // focus 설정
         this.setFocusable(true);
         this.requestFocus();
-        changePanel(wPanel);
+        changePanel(locationPanel);
     }
 
     private void initMenu() {

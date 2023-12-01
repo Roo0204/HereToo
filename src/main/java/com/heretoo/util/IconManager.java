@@ -16,8 +16,9 @@ public class IconManager {
     public static final String SUNRISE_ARROW = "sunrise_arrow.png";
     public static final String SUNSET = "sunset.png";
     public static final String SUNSET_ARROW = "sunset_arrow.png";
-
     public static final String PLACEHOLDER = "placeholder.png";
+    public static final String RIGHT_ARROW = "right_arrow.png";
+    public static final String LEFT_ARROW = "left_arrow.png";
 
 
 }
