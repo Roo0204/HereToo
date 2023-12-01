@@ -22,6 +22,10 @@ public class MainFrame extends JFrame {
 
         panelStack = new Stack<>();
 
+        WeatherPanel wPanel = new WeatherPanel();
+        panelStack.add(wPanel);
+        add(wPanel, BorderLayout.EAST);
+
         MapPanel mapPanel = new MapPanel();
         panelStack.add(mapPanel);
         add(new SearchPanel(this), BorderLayout.WEST);
@@ -31,6 +35,7 @@ public class MainFrame extends JFrame {
         // focus 설정
         this.setFocusable(true);
         this.requestFocus();
+        changePanel(wPanel);
     }
 
     private void initMenu() {
@@ -55,13 +60,13 @@ public class MainFrame extends JFrame {
     }
 
     public void updateMap(List<List<String>> pointList) {
-        JPanel jp;
-        while ((jp = panelStack.pop()).getClass() != MapPanel.class) {
-            jp.setVisible(false);
-        }
-        jp.setVisible(true);
-        panelStack.add(jp);
-        ((MapPanel)jp).updateMap(pointList);
+//        JPanel jp;
+//        while ((jp = panelStack.pop()).getClass() != MapPanel.class) {
+//            jp.setVisible(false);
+//        }
+//        jp.setVisible(true);
+//        panelStack.add(jp);
+//        ((MapPanel)jp).updateMap(pointList);
     }
 
     public void changePanel(JPanel newPanel) {
