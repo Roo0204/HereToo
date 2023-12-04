@@ -12,6 +12,7 @@ repositories {
 dependencies {
 //    testImplementation(platform("org.junit:junit-bom:5.9.1"))
 //    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0")
     implementation ("mysql:mysql-connector-java:8.0.28")
     compileOnly ("org.projectlombok:lombok:1.18.30")
     annotationProcessor ("org.projectlombok:lombok:1.18.30")

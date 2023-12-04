@@ -243,7 +243,7 @@ public class SearchPanel extends JPanel {
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-//                    mainFrame.changePanel(new SpotPanel(data.getName()));
+                    mainFrame.changePanel(new SpotPanel(data.getName()));
                 }
 
                 @Override

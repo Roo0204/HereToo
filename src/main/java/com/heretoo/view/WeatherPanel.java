@@ -1,34 +1,29 @@
 package com.heretoo.view;
 
-import com.heretoo.util.IconManager;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
 
 public class WeatherPanel extends JPanel {
     public final String PANEL_TITLE = "지역 날씨";
 
     public WeatherPanel() {
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(680, 700));
-
+        this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(680, 700));
         JPanel panel = new JPanel();
-        panel.add(titlePanel(PANEL_TITLE));
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(panelsToday());
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(panelsTime());
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(panelsDay());
-        add(panel);
+        panel.add(this.titlePanel("지역 날씨"));
+        panel.add(this.whitespacePanel(630, 10));
+        panel.add(this.panelsToday());
+        panel.add(this.whitespacePanel(630, 10));
+        panel.add(this.panelsTime());
+        panel.add(this.whitespacePanel(630, 10));
+        panel.add(this.panelsDay());
+        this.add(panel);
     }
 
     private JPanel whitespacePanel(int width, int height) {
@@ -39,9 +34,9 @@ public class WeatherPanel extends JPanel {
 
     private JPanel titlePanel(String title) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(90*7, 50));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addASizedLabel(title, 36.0f, panel);
+        panel.setPreferredSize(new Dimension(630, 50));
+        panel.setLayout(new BoxLayout(panel, 1));
+        this.addASizedLabel(title, 36.0F, panel);
         return panel;
     }
 
@@ -49,32 +44,32 @@ public class WeatherPanel extends JPanel {
         JPanel panely = new JPanel();
         panely.setBorder(new LineBorder(Color.lightGray, 1));
         panely.setBackground(Color.lightGray);
-        panely.setPreferredSize(new Dimension(90*7, 220));
-        panely.setLayout(new BoxLayout(panely, BoxLayout.Y_AXIS));
-        panely.add(currentHeaderPanel("경상남도 통영시 정량동", IconManager.PLACEHOLDER));
-        panely.add(panelsTodayX());
-        panely.add(currentFooterPanel("현재 남해안에 폭우주의보로 인해 비가 많이 옵니다, 각별히 주의하세요"));
+        panely.setPreferredSize(new Dimension(630, 220));
+        panely.setLayout(new BoxLayout(panely, 1));
+        panely.add(this.currentHeaderPanel("경상남도 통영시 정량동", "placeholder.png"));
+        panely.add(this.panelsTodayX());
+        panely.add(this.currentFooterPanel("현재 남해안에 폭우주의보로 인해 비가 많이 옵니다, 각별히 주의하세요"));
         return panely;
     }
 
     private JPanel panelsTodayX() {
         JPanel panelx = new JPanel();
         panelx.setOpaque(false);
-        panelx.setPreferredSize(new Dimension(90*7, 140));
-        panelx.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        panelx.setLayout(new BoxLayout(panelx, BoxLayout.X_AXIS));
-        panelx.add(currentPanel(IconManager.SUN, "20℃", "맑음"));
-        panelx.add(whitePanel("미세먼지", IconManager.FINE_DUST, "낮음"));
+        panelx.setPreferredSize(new Dimension(630, 140));
+        panelx.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        panelx.setLayout(new BoxLayout(panelx, 0));
+        panelx.add(this.currentPanel("sun.png", "20℃", "맑음"));
+        panelx.add(this.whitePanel("미세먼지", "fine_dust.png", "낮음"));
         panelx.add(Box.createHorizontalStrut(10));
-        panelx.add(whitePanel("자외선", IconManager.UV, "낮음"));
+        panelx.add(this.whitePanel("자외선", "uv-index.png", "낮음"));
         panelx.add(Box.createHorizontalStrut(10));
-        panelx.add(whitePanel("바람", IconManager.WIND, "5m/s"));
+        panelx.add(this.whitePanel("바람", "wind.png", "5m/s"));
         panelx.add(Box.createHorizontalStrut(10));
-        panelx.add(whitePanel("습도", IconManager.HUMIDITY, "50%"));
+        panelx.add(this.whitePanel("습도", "humidity.png", "50%"));
         panelx.add(Box.createHorizontalStrut(10));
-        panelx.add(whitePanel("일출", IconManager.SUNRISE_ARROW, "06:00"));
+        panelx.add(this.whitePanel("일출", "sunrise_arrow.png", "06:00"));
         panelx.add(Box.createHorizontalStrut(10));
-        panelx.add(whitePanel("일몰", IconManager.SUNSET_ARROW, "18:00"));
+        panelx.add(this.whitePanel("일몰", "sunset_arrow.png", "18:00"));
         return panelx;
     }
 
@@ -82,43 +77,43 @@ public class WeatherPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
         panel.setPreferredSize(new Dimension(90, 140));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(10,15,10,15));
-        addAnImage(img, panel);
-        addASizedLabel(temp, 24.0f, panel);
-        addALabel(status, panel);
+        panel.setLayout(new BoxLayout(panel, 1));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        this.addAnImage(img, panel);
+        this.addASizedLabel(temp, 24.0F, panel);
+        this.addALabel(status, panel);
         return panel;
     }
 
     private JPanel whitePanel(String type, String img, String status) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.white);
-        panel.setBorder(new EmptyBorder(0,7,0,7));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addALabel(type, panel);
-        addAnImage(img, panel);
-        addALabel(status, panel);
+        panel.setBorder(new EmptyBorder(0, 7, 0, 7));
+        panel.setLayout(new BoxLayout(panel, 1));
+        this.addALabel(type, panel);
+        this.addAnImage(img, panel);
+        this.addALabel(status, panel);
         return panel;
     }
 
     private JPanel currentHeaderPanel(String text, String img) {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(90*7, 20));
-        panel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        addASizedImage(img, 20,20, panel);
-        addASizedLabel(text, 16.0f, panel);
+        panel.setPreferredSize(new Dimension(630, 20));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        panel.setLayout(new FlowLayout(0));
+        this.addASizedImage(img, 20, 20, panel);
+        this.addASizedLabel(text, 16.0F, panel);
         return panel;
     }
 
     private JPanel currentFooterPanel(String text) {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(90*7, 40));
-        panel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addALabel(text, panel);
+        panel.setPreferredSize(new Dimension(630, 40));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        panel.setLayout(new BoxLayout(panel, 1));
+        this.addALabel(text, panel);
         return panel;
     }
 
@@ -126,16 +121,16 @@ public class WeatherPanel extends JPanel {
         JPanel panels = new JPanel();
         panels.setBorder(new LineBorder(Color.lightGray, 1));
         panels.setBackground(Color.lightGray);
-        panels.setPreferredSize(new Dimension(90*7, 160));
-        panels.setLayout(new BoxLayout(panels, BoxLayout.X_AXIS));
-        panels.add(onePanel("시간", "온도", "슾도", ""));
-        panels.add(onePanel("10am", "10℃", "50%", IconManager.SUN));
-        panels.add(onePanel("11am", "20℃", "60%", IconManager.CLOUD));
-        panels.add(onePanel("12pm", "30℃", "70%", IconManager.RAIN));
-        panels.add(onePanel("1pm", "40℃", "80%", IconManager.CLOUDY));
-        panels.add(onePanel("2pm", "50℃", "90%", IconManager.STORM));
-        panels.add(onePanel("3pm", "60℃", "100%", IconManager.WIND));
-        panels.add(onePanel("4pm", "70℃", "110%", IconManager.SUNSET));
+        panels.setPreferredSize(new Dimension(630, 160));
+        panels.setLayout(new BoxLayout(panels, 0));
+        panels.add(this.onePanel("시간", "온도", "슾도", ""));
+        panels.add(this.onePanel("10am", "10℃", "50%", "sun.png"));
+        panels.add(this.onePanel("11am", "20℃", "60%", "cloud.png"));
+        panels.add(this.onePanel("12pm", "30℃", "70%", "rain.png"));
+        panels.add(this.onePanel("1pm", "40℃", "80%", "cloudy.png"));
+        panels.add(this.onePanel("2pm", "50℃", "90%", "storm.png"));
+        panels.add(this.onePanel("3pm", "60℃", "100%", "wind.png"));
+        panels.add(this.onePanel("4pm", "70℃", "110%", "sunset.png"));
         return panels;
     }
 
@@ -143,16 +138,16 @@ public class WeatherPanel extends JPanel {
         JPanel panels = new JPanel();
         panels.setBorder(new LineBorder(Color.lightGray, 1));
         panels.setBackground(Color.lightGray);
-        panels.setPreferredSize(new Dimension(90*7, 160));
-        panels.setLayout(new BoxLayout(panels, BoxLayout.X_AXIS));
-        panels.add(onePanel("요일", "온도", "슾도", ""));
-        panels.add(onePanel("월요일", "10/16℃", "50%", IconManager.SUN));
-        panels.add(onePanel("화요일", "20/26℃", "60%", IconManager.CLOUD));
-        panels.add(onePanel("수요일", "30/36℃", "70%", IconManager.RAIN));
-        panels.add(onePanel("목요일", "40/46℃", "80%", IconManager.CLOUDY));
-        panels.add(onePanel("금요일", "50/56℃", "90%", IconManager.STORM));
-        panels.add(onePanel("토요일", "60/66℃", "100%", IconManager.WIND));
-        panels.add(onePanel("일요일", "70/76℃", "110%", IconManager.SUNSET));
+        panels.setPreferredSize(new Dimension(630, 160));
+        panels.setLayout(new BoxLayout(panels, 0));
+        panels.add(this.onePanel("요일", "온도", "슾도", ""));
+        panels.add(this.onePanel("월요일", "10/16℃", "50%", "sun.png"));
+        panels.add(this.onePanel("화요일", "20/26℃", "60%", "cloud.png"));
+        panels.add(this.onePanel("수요일", "30/36℃", "70%", "rain.png"));
+        panels.add(this.onePanel("목요일", "40/46℃", "80%", "cloudy.png"));
+        panels.add(this.onePanel("금요일", "50/56℃", "90%", "storm.png"));
+        panels.add(this.onePanel("토요일", "60/66℃", "100%", "wind.png"));
+        panels.add(this.onePanel("일요일", "70/76℃", "110%", "sunset.png"));
         return panels;
     }
 
@@ -160,52 +155,54 @@ public class WeatherPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
         panel.setPreferredSize(new Dimension(80, 160));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addALabel(time, panel);
-        addAnImage(img, panel);
-        addALabel(temp, panel);
-        addALabel(humid, panel);
+        panel.setLayout(new BoxLayout(panel, 1));
+        this.addALabel(time, panel);
+        this.addAnImage(img, panel);
+        this.addALabel(temp, panel);
+        this.addALabel(humid, panel);
         return panel;
     }
 
     private void addASizedLabel(String text, float size, JPanel panel) {
         JLabel label = new JLabel(text);
         label.setFont(label.getFont().deriveFont(size));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentX(0.5F);
         panel.add(label);
     }
 
     private void addALabel(String text, JPanel panel) {
         JLabel label = new JLabel(text);
-        label.setFont(label.getFont().deriveFont(16.0f));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        label.setFont(label.getFont().deriveFont(16.0F));
+        label.setAlignmentX(0.5F);
+        label.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         panel.add(label);
     }
 
     private void addASizedImage(String imgName, int w, int h, JPanel panel) {
         JLabel image = new JLabel();
         Image mapImage = null;
+
         try {
-            URL imgURL = getClass().getResource(IconManager.ICON_PATH + imgName);
+            URL imgURL = this.getClass().getResource("/icon/" + imgName);
             if (imgURL != null) {
                 BufferedImage img = ImageIO.read(imgURL);
-                mapImage = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+                mapImage = img.getScaledInstance(w, h, 4);
             } else {
                 System.err.println("Couldn't find file.");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException var9) {
+            var9.printStackTrace();
         }
 
         assert mapImage != null;
+
         image.setIcon(new ImageIcon(mapImage));
-        image.setAlignmentX(Component.CENTER_ALIGNMENT);
+        image.setAlignmentX(0.5F);
         panel.add(image);
     }
 
     private void addAnImage(String imgName, JPanel panel) {
-        if (imgName.isEmpty()){
+        if (imgName.isEmpty()) {
             JPanel whitespace = new JPanel();
             whitespace.setOpaque(false);
             whitespace.setSize(new Dimension(60, 60));
@@ -213,22 +210,25 @@ public class WeatherPanel extends JPanel {
         } else {
             JLabel image = new JLabel();
             Image mapImage = null;
+
             try {
-                URL imgURL = getClass().getResource(IconManager.ICON_PATH + imgName);
+                URL imgURL = this.getClass().getResource("/icon/" + imgName);
                 if (imgURL != null) {
                     BufferedImage img = ImageIO.read(imgURL);
-                    mapImage = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                    mapImage = img.getScaledInstance(60, 60, 4);
                 } else {
                     System.err.println("Couldn't find file.");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException var7) {
+                var7.printStackTrace();
             }
 
             assert mapImage != null;
+
             image.setIcon(new ImageIcon(mapImage));
-            image.setAlignmentX(Component.CENTER_ALIGNMENT);
+            image.setAlignmentX(0.5F);
             panel.add(image);
         }
+
     }
 }

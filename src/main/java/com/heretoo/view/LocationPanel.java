@@ -1,230 +1,202 @@
 package com.heretoo.view;
 
-import com.heretoo.util.IconManager;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+class Destination {
+    private String name;
+    private String history;
+    private String review;
+    private String location;
+    private String contact;
+    private String hours;
+    private String introduction;
+    private ImageIcon image; // 이미지를 위한 필드
+
+    public Destination(String name, String history, String review, String location, String contact, String hours, String introduction, ImageIcon image) {
+        this.name = name;
+        this.history = history;
+        this.review = review;
+        this.location = location;
+        this.contact = contact;
+        this.hours = hours;
+        this.introduction = introduction;
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public String getHours() {
+        return hours;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public ImageIcon getImage() {
+        return image;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
 
 public class LocationPanel extends JPanel {
-    public final String IMG_PATH = "/img/";
-    public final String PANEL_TITLE = "지역 정보";
+    private DefaultListModel<Destination> destinationListModel;
+    private JList<Destination> destinationList;
+    private JTextArea descriptionTextArea;
+    private JLabel imageLabel; // 이미지를 표시하기 위한 JLabel
 
-    public LocationPanel() {
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(680, 700));
-
-        JPanel panel = new JPanel();
-        panel.add(titlePanel(PANEL_TITLE));
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(titleOnPanel("지역 뉴스 / 축제", newsPanel()));
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(titleOnPanel("지역 추천 코스", recommendationPanel()));
-        panel.add(whitespacePanel(90*7, 10));
-        panel.add(titleOnPanel("지역 추천 코스", panelsTime()));
-        add(panel);
-    }
-
-    private JPanel titlePanel(String title) {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(90*7, 50));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addASizedLabel(title, 36.0f, panel);
-        addASizedImage("slogan.png", 600, 60, panel);
-        return panel;
-    }
-
-    private JPanel titleOnPanel(String title, JPanel targetPanel) {
-        JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.lightGray, 1));
-        panel.setBackground(Color.lightGray);
-        panel.setPreferredSize(new Dimension(90*7, 200));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addASizedLabel(title, 16.0f, panel);
-        panel.add(targetPanel);
-        return panel;
-    }
-
-    private JPanel newsPanel() {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(90*7, 160));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        addASizedIcon(IconManager.LEFT_ARROW, 20, 20, panel);
-        addASizedImage("festival_1.png", 100, 160, panel);
-        addASizedImage("festival_2.png", 200, 160, panel);
-        addASizedImage("festival_3.png", 200, 160, panel);
-        addASizedIcon(IconManager.RIGHT_ARROW, 20, 20, panel);
-        return panel;
-    }
-
-    private JPanel recommendationPanel() {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(90*7, 160));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        addASizedIcon(IconManager.LEFT_ARROW, 20, 20, panel);
-        addASizedImage("course_1.png", 140, 160, panel);
-        addASizedImage("course_2.png", 400, 160, panel);
-        addASizedIcon(IconManager.RIGHT_ARROW, 20, 20, panel);
-        return panel;
-    }
-
-    private JPanel panelsTime() {
-        JPanel panels = new JPanel();
-        panels.setOpaque(false);
-        panels.setPreferredSize(new Dimension(90*7, 160));
-        panels.setLayout(new BoxLayout(panels, BoxLayout.X_AXIS));
-        panels.add(onePanel("시간", "온도", "슾도", ""));
-        panels.add(onePanel("10am", "10℃", "50%", IconManager.SUN));
-        panels.add(onePanel("11am", "20℃", "60%", IconManager.CLOUD));
-        panels.add(onePanel("12pm", "30℃", "70%", IconManager.RAIN));
-        panels.add(onePanel("1pm", "40℃", "80%", IconManager.CLOUDY));
-        panels.add(onePanel("2pm", "50℃", "90%", IconManager.STORM));
-        panels.add(onePanel("3pm", "60℃", "100%", IconManager.WIND));
-        panels.add(onePanel("4pm", "70℃", "110%", IconManager.SUNSET));
-        return panels;
-    }
-
-    private JPanel onePanel(String time, String temp, String humid, String img) {
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setPreferredSize(new Dimension(80, 160));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        addALabel(time, panel);
-        addAnIcon(img, panel);
-        addALabel(temp, panel);
-        addALabel(humid, panel);
-        return panel;
-    }
-
-    private JPanel whitespacePanel(int width, int height) {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(width, height));
-        return panel;
-    }
-
-    private void addASizedLabel(String text, float size, JPanel panel) {
-        JLabel label = new JLabel(text);
-        label.setFont(label.getFont().deriveFont(size));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(label);
-    }
-
-    private void addALabel(String text, JPanel panel) {
-        JLabel label = new JLabel(text);
-        label.setFont(label.getFont().deriveFont(16.0f));
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
-        panel.add(label);
-    }
-
-    private void addASizedImage(String imgName, int w, int h, JPanel panel) {
-        JLabel image = new JLabel();
-        Image mapImage = null;
-        try {
-            URL imgURL = getClass().getResource(IMG_PATH + imgName);
-            if (imgURL != null) {
-                BufferedImage img = ImageIO.read(imgURL);
-                mapImage = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
-            } else {
-                System.err.println("Couldn't find file.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public LocationPanel(List<Destination> destinations) {
+        destinationListModel = new DefaultListModel<>();
+        for (Destination destination : destinations) {
+            destinationListModel.addElement(destination);
         }
 
-        assert mapImage != null;
-        image.setIcon(new ImageIcon(mapImage));
-        image.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(image);
+        setLayout(new BorderLayout(10, 10));
+
+        // 지역 목록을 보여주는 JList
+        destinationList = new JList<>(destinationListModel);
+        destinationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        destinationList.addListSelectionListener(e -> {
+            Destination selectedDestination = destinationList.getSelectedValue();
+            if (selectedDestination != null) {
+                updateDescription(selectedDestination); // 선택된 목적지의 설명 업데이트
+                imageLabel.setIcon(selectedDestination.getImage()); // 선택된 목적지의 이미지를 표시
+            }
+        });
+        JScrollPane scrollPane = new JScrollPane(destinationList);
+        scrollPane.setPreferredSize(new Dimension(200, 0));
+        add(scrollPane, BorderLayout.WEST);
+
+        // 지역 설명과 이미지를 보여주는 JTextArea와 JLabel
+        descriptionTextArea = new JTextArea();
+        descriptionTextArea.setEditable(false);
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionTextArea);
+        add(descriptionScrollPane, BorderLayout.CENTER);
+
+        imageLabel = new JLabel();
+        add(imageLabel, BorderLayout.EAST);
     }
 
-    private void addASizedIcon(String imgName, int w, int h, JPanel panel) {
-        if (imgName.isEmpty()){
-            JPanel whitespace = new JPanel();
-            whitespace.setOpaque(false);
-            whitespace.setSize(new Dimension(w, h));
-            panel.add(whitespace);
-        } else {
-            JLabel image = new JLabel();
-            Image mapImage = null;
-            try {
-                URL imgURL = getClass().getResource(IconManager.ICON_PATH + imgName);
-                if (imgURL != null) {
-                    BufferedImage img = ImageIO.read(imgURL);
-                    mapImage = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
-                } else {
-                    System.err.println("Couldn't find file.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            assert mapImage != null;
-            image.setIcon(new ImageIcon(mapImage));
-            image.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(image);
-        }
+    private void updateDescription(Destination destination) {
+        StringBuilder description = new StringBuilder();
+        description.append("이름: ").append(destination.getName()).append("\n");
+                description.append("역사: ").append(destination.getHistory()).append("\n");
+                        description.append("리뷰: ").append(destination.getReview()).append("\n");
+                                description.append("위치: ").append(destination.getLocation()).append("\n");
+                                        description.append("연락처: ").append(destination.getContact()).append("\n");
+                                                description.append("영업시간: ").append(destination.getHours()).append("\n");
+                                                        description.append("소개: ").append(destination.getIntroduction());
+        descriptionTextArea.setText(description.toString());
     }
 
-    private void addAnIcon(String imgName, JPanel panel) {
-        if (imgName.isEmpty()){
-            JPanel whitespace = new JPanel();
-            whitespace.setOpaque(false);
-            whitespace.setSize(new Dimension(60, 60));
-            panel.add(whitespace);
-        } else {
-            JLabel image = new JLabel();
-            Image mapImage = null;
-            try {
-                URL imgURL = getClass().getResource(IconManager.ICON_PATH + imgName);
-                if (imgURL != null) {
-                    BufferedImage img = ImageIO.read(imgURL);
-                    mapImage = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-                } else {
-                    System.err.println("Couldn't find file.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            List<Destination> destinations = createDestinations();
+            LocationPanel locationPanel = new LocationPanel(destinations);
 
-            assert mapImage != null;
-            image.setIcon(new ImageIcon(mapImage));
-            image.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(image);
-        }
+            JFrame frame = new JFrame("지역 정보");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(locationPanel);
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
 
-    private void addAnImage(String imgName, JPanel panel) {
-        if (imgName.isEmpty()){
-            JPanel whitespace = new JPanel();
-            whitespace.setOpaque(false);
-            whitespace.setSize(new Dimension(60, 60));
-            panel.add(whitespace);
-        } else {
-            JLabel image = new JLabel();
-            Image mapImage = null;
-            try {
-                URL imgURL = getClass().getResource(IMG_PATH + imgName);
-                if (imgURL != null) {
-                    BufferedImage img = ImageIO.read(imgURL);
-                    mapImage = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-                } else {
-                    System.err.println("Couldn't find file.");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private static List<Destination> createDestinations() {
+        List<Destination> destinations = new ArrayList<>();
 
-            assert mapImage != null;
-            image.setIcon(new ImageIcon(mapImage));
-            image.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(image);
-        }
+        // Destination 1
+        String history1 = "이 지역은 오랜 역사와 전통을 가지고 있습니다...";
+        String review1 = "여기를 방문해서 정말 좋은 경험을 했습니다...";
+        String location1 = "지도상의 위치 정보";
+        String contact1 = "연락처 정보";
+        String hours1 = "영업시간 정보";
+        String introduction1 = "이 지역은 자연의 아름다움과 풍부한 문화를 갖고 있습니다...";
+        ImageIcon image1 = new ImageIcon("지역1.jpg"); // 이미지 파일의 경로
+        Destination dest1 = new Destination("지역 1", history1, review1, location1, contact1, hours1, introduction1, image1);
+
+        // Destination 2
+        String history2 = "이 지역은 고대부터 인류의 역사와 깊은 연관이 있습니다...";
+        String review2 = "이곳은 정말로 매력적인 장소입니다. 꼭 방문해보세요...";
+        String location2 = "지도상의 위치 정보";
+        String contact2 = "연락처 정보";
+        String hours2 = "영업시간 정보";
+        String introduction2 = "이 지역은 독특한 문화와 아름다운 자연 경관을 자랑합니다...";
+        ImageIcon image2 = new ImageIcon("지역2.jpg"); // 이미지 파일의 경로
+        Destination dest2 = new Destination("지역 2", history2, review2, location2, contact2, hours2, introduction2, image2);
+
+        // Destination 3
+        String history3 = "이 지역은 오래된 도시로, 역사적인 유적과 건축물이 많이 보존되어 있습니다...";
+        String review3 = "여기에서는 훌륭한 음식과 아름다운 풍경을 즐길 수 있습니다...";
+        String location3 = "지도상의 위치 정보";
+        String contact3 = "연락처 정보";
+        String hours3 = "영업시간 정보";
+        String introduction3 = "이 지역은 전통과 현대의 조화로운 모습을 보여줍니다...";
+        ImageIcon image3 = new ImageIcon("지역3.jpg"); // 이미지 파일의 경로
+        Destination dest3 = new Destination("지역 3", history3, review3, location3, contact3, hours3, introduction3, image3);
+
+        // Destination 4
+        String history4 = "이 지역은 아름다운 자연 경관과 풍부한 자원을 가지고 있습니다...";
+        String review4 = "숨막히는 풍경과 신선한 공기를 마시며 여행을 즐겼습니다...";
+        String location4 = "지도상의 위치 정보";
+        String contact4 = "연락처 정보";
+        String hours4 = "영업시간 정보";
+        String introduction4 = "이 지역은 자연 속에서 휴식과 여유를 즐길 수 있는 곳입니다...";
+        ImageIcon image4 = new ImageIcon("지역4.jpg"); // 이미지 파일의 경로
+        Destination dest4 = new Destination("지역 4", history4, review4, location4, contact4, hours4, introduction4, image4);
+
+        // Destination 5
+        String history5 = "이 지역은 독특한 문화와 전통을 가지고 있으며, 많은 관광객들이 찾는 명소입니다...";
+        String review5 = "여기에서는 다양한 활동과 이벤트를 즐길 수 있습니다...";
+        String location5 = "지도상의 위치 정보";
+        String contact5 = "연락처 정보";
+        String hours5 = "영업시간 정보";
+        String introduction5 = "이 지역은 다채로운 문화와 예술을 경험할 수 있는 곳입니다...";
+        ImageIcon image5 = new ImageIcon("지역5.jpg"); // 이미지 파일의 경로
+        Destination dest5 = new Destination("지역 5", history5, review5, location5, contact5, hours5, introduction5, image5);
+
+        destinations.add(dest1);
+        destinations.add(dest2);
+        destinations.add(dest3);
+        destinations.add(dest4);
+        destinations.add(dest5);
+
+        return destinations;
+    }
+
+    private static void createAndShowGUI() {
+        List<Destination> destinations = createDestinations();
+        LocationPanel locationPanel = new LocationPanel(destinations);
+
+        JFrame frame = new JFrame("지역 정보");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(locationPanel);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

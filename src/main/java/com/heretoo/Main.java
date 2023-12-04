@@ -15,12 +15,20 @@ public class Main {
         String userName;
         String password;
 
+        String apiUrl;
+        String apiKeyEnc;
+        String apiKeyDec;
+
         Properties prop = new Properties();
         try (InputStream resource = Main.class.getClassLoader().getResourceAsStream("database.properties")) {
             prop.load(resource);
             database = prop.getProperty("db");
             userName = prop.getProperty("user");
             password = prop.getProperty("password");
+
+            apiUrl = prop.getProperty("openApiUrl");
+            apiKeyEnc = prop.getProperty("openApiKeyEnc");
+            apiKeyDec = prop.getProperty("openApiKeyDec");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
